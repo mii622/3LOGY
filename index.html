@@ -1,1 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+
+<title></title>
+
+<style>
+body {
+  font-family: "Zen Maru Gothic", sans-serif;
+  background:#0c0a09;
+  color:#e97520;
+}
+
+h1 {
+  text-align:center;
+  font-size:2rem;
+  margin:30px 0 20px;
+  color:#ffffff;
+}
+
+.banner {
+  width:100%;
+}
+
+/* 🇯🇵🇰🇷 追加：言語ボタン */
+.lang-switch{
+  position:fixed;
+  top:10px;
+  right:10px;
+  display:flex;
+  gap:10px;
+  z-index:100;
+}
+
+.flag{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  border:2px solid transparent;
+}
+
+.flag.active{
+  border:2px solid gold;
+}
+
+/* 既存そのまま */
+#goods-list {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  padding:20px;
+  max-width:1000px;
+  margin:0 auto;
+}
+
+.item {
+  background:#fff;
+  border-radius:16px;
+  padding:15px;
+}
+
+.item img {
+  width:100%;
+  border-radius:12px;
+}
+
+.item-name { font-weight:bold; margin:8px 0; }
+.item-price { color:#555; margin-bottom:8px; }
+
+.item-qty {
+  width:50px;
+}
+
+#total {
+  margin:40px auto 10px;
+  text-align:center;
+  font-size:1.5em;
+  background:#fff;
+  padding:20px;
+  max-width:400px;
+  border-radius:12px;
+}
+
+#summary {
+  max-width:600px;
+  margin:0 auto 50px;
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+}
+
+.summary-item {
+  margin:6px 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🇯🇵🇰🇷 追加 -->
+<div class="lang-switch">
+  <img src="images/flag_jp.png" id="flag-ja" class="flag active" onclick="setLang('ja')">
+  <img src="images/flag_kr.png" id="flag-ko" class="flag" onclick="setLang('ko')">
+</div>
+
+<header>
+  <img src="images/IMG_banner.JPG" class="banner">
+</header>
+
+<h1 id="title"></h1>
+
+<div id="goods-list"></div>
+
+<div id="total"></div>
+
+<div id="summary">
+  <h2 id="summary-title"></h2>
+  <div id="summary-list"></div>
+</div>
+
+<script>
+// 🟡 言語状態
+let currentLang = "ja";
+b
+// 🟡 テキスト翻訳
+const texts = {
+  ja:{ title:"グッズ計算", total:"合計", summary:"選んだ内容", none:"なし" },
+  ko:{ title:"굿즈 계산", total:"합계", summary:"선택한 상품", none:"없음" }
+};
+
+const imageUrls = [
+  "images/IMG_001.JPG","images/IMG_002.JPG","images/IMG_003.JPG","images/IMG_004.JPG",
+  "images/IMG_005.JPG","images/IMG_006.JPG","images/IMG_007.JPG","images/IMG_008.JPG",
+  "images/IMG_009.JPG","images/IMG_0010.JPG","images/IMG_0011.JPG","images/IMG_0012.JPG"
+];
+
+// 🟡 商品を多言語化
+const goods = [
+  { name:{ja:"LEDブレスレット",ko:"LED 팔찌"}, price:2000, types:[] },
+  { name:{ja:"Tシャツ",ko:"티셔츠"}, price:4500, types:["A black","B white"] },
+  { name:{ja:"オーバーサイズTシャツ",ko:"오버사이즈 티셔츠"}, price:5000, types:[] },
+  { name:{ja:"フェイスタオル",ko:"페이스타월"}, price2500, types:["A black","B orange"] },
+  { name:{ja:"ラウンドボストンバッグ",ko:"라운드 보스턴백"}, price:5000, types:[] },
+  { name:{ja:"パスポートケース",ko:"여권 케이스"}, price:3000, types:[] },
+  { name:{ja:"マルチポーチ",ko:"멀티 파우치"}, price:2000, types:[] },
+  { name:{ja:"ロープキーホルダー",ko:"로프 키링"}, price:1500, types:["A black","B orange"] },
+  { name:{ja:"クリアバンド",ko:"투명 밴드"}, price:1500, types:["A black","B orange"] },
+  { name:{ja:"フライトタグキーホルダー",ko:"플라이트태그 키링"}, price:1000, types:["A YOKOHAMA","B KOBE"] },
+  { name:{ja:"IDフォトケース",ko:"ID포토카드 케이스"}, price:1800, types:["A YONGHWA","B MINHYUK","C JUNGSHIN"] },
+  { name:{ja:"アクリルスタンド",ko:"아크릴 스탠드"}, price:2300, types:["A YONGHWA","B MINHYUK","C JUNGSHIN"] },
+  { name:{ja:"ランダム缶バッジ6種",ko:"랜덤 캔 뱃지　6가지"}, price:500, types:[] }
+  { name:{ja:"ランダムアクリルチャーム6種",ko:"랜덤 아크릴키링　6가지"}, price:800, types:[] }
+  { name:{ja:"ランダトレカ9種",ko:"랜덤 포카 9가지"}, price:300, types:[] }  
+];
+
+const container = document.getElementById("goods-list");
+
+// 🟡 描画
+function renderItems(){
+  container.innerHTML="";
+
+  goods.forEach((item,index)=>{
+    const div=document.createElement("div");
+    div.className="item";
+
+    let typesHTML="";
+    if(item.types.length>0){
+      typesHTML='<div>';
+      item.types.forEach(type=>{
+        typesHTML+=`
+        <div>
+          <label>${type}</label>
+          <input type="number" min="0" value="0"
+          class="item-qty"
+          data-name="${item.name[currentLang]}"
+          data-type="${type}"
+          data-price="${item.price}">
+        </div>`;
+      });
+      typesHTML+='</div>';
+    }else{
+      typesHTML=`
+      <input type="number" min="0" value="0"
+      class="item-qty"
+      data-name="${item.name[currentLang]}"
+      data-type=""
+      data-price="${item.price}">`;
+    }
+
+    div.innerHTML=`
+      <img src="${imageUrls[index]}">
+      <div class="item-name">${item.name[currentLang]}</div>
+      <div class="item-price">${item.price}円</div>
+      ${typesHTML}
+    `;
+
+    container.appendChild(div);
+  });
+
+  document.querySelectorAll(".item-qty")
+    .forEach(input=>input.addEventListener("input",updateTotal));
+}
+
+// 🟡 合計
+function updateTotal(){
+  let total=0;
+  let summaryHTML="";
+
+  document.querySelectorAll(".item-qty").forEach(input=>{
+    const qty=Number(input.value)||0;
+    if(qty===0)return;
+
+    const name=input.dataset.name;
+    const type=input.dataset.type;
+    const price=Number(input.dataset.price);
+    const subtotal=qty*price;
+
+    total+=subtotal;
+
+    summaryHTML+=`
+    <div class="summary-item">
+      ${name}${type?`(${type})`:""} × ${qty} … ${subtotal}円
+    </div>`;
+  });
+
+  document.getElementById("total").textContent =
+    `${texts[currentLang].total}: ${total} 円`;
+
+  document.getElementById("summary-list").innerHTML =
+    summaryHTML || texts[currentLang].none;
+}
+
+// 🟡 言語切替
+function setLang(lang){
+  currentLang=lang;
+
+  document.getElementById("title").textContent=texts[lang].title;
+  document.getElementById("summary-title").textContent=texts[lang].summary;
+
+  document.querySelectorAll(".flag").forEach(f=>f.classList.remove("active"));
+  document.getElementById("flag-"+lang).classList.add("active");
+
+  renderItems();
+}
+
+// 初期表示
+setLang("ja");
+</script>
+
+</body>
+</html>
 
