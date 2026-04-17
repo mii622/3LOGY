@@ -128,7 +128,7 @@ h1 {
 <script>
 // 🟡 言語状態
 let currentLang = "ja";
-b
+
 // 🟡 テキスト翻訳
 const texts = {
   ja:{ title:"グッズ計算", total:"合計", summary:"選んだ内容", none:"なし" },
@@ -146,7 +146,7 @@ const goods = [
   { name:{ja:"LEDブレスレット",ko:"LED 팔찌"}, price:2000, types:[] },
   { name:{ja:"Tシャツ",ko:"티셔츠"}, price:4500, types:["A black","B white"] },
   { name:{ja:"オーバーサイズTシャツ",ko:"오버사이즈 티셔츠"}, price:5000, types:[] },
-  { name:{ja:"フェイスタオル",ko:"페이스타월"}, price2500, types:["A black","B orange"] },
+  { name:{ja:"フェイスタオル",ko:"페이스타월"}, price:2500, types:["A black","B orange"] },
   { name:{ja:"ラウンドボストンバッグ",ko:"라운드 보스턴백"}, price:5000, types:[] },
   { name:{ja:"パスポートケース",ko:"여권 케이스"}, price:3000, types:[] },
   { name:{ja:"マルチポーチ",ko:"멀티 파우치"}, price:2000, types:[] },
@@ -155,9 +155,9 @@ const goods = [
   { name:{ja:"フライトタグキーホルダー",ko:"플라이트태그 키링"}, price:1000, types:["A YOKOHAMA","B KOBE"] },
   { name:{ja:"IDフォトケース",ko:"ID포토카드 케이스"}, price:1800, types:["A YONGHWA","B MINHYUK","C JUNGSHIN"] },
   { name:{ja:"アクリルスタンド",ko:"아크릴 스탠드"}, price:2300, types:["A YONGHWA","B MINHYUK","C JUNGSHIN"] },
-  { name:{ja:"ランダム缶バッジ6種",ko:"랜덤 캔 뱃지　6가지"}, price:500, types:[] }
-  { name:{ja:"ランダムアクリルチャーム6種",ko:"랜덤 아크릴키링　6가지"}, price:800, types:[] }
-  { name:{ja:"ランダトレカ9種",ko:"랜덤 포카 9가지"}, price:300, types:[] }  
+  { name:{ja:"ランダム缶バッジ6種",ko:"랜덤 캔 뱃지　6가지"}, price:500, types:[] },
+  { name:{ja:"ランダムアクリルチャーム6種",ko:"랜덤 아크릴키링　6가지"}, price:800, types:[] },
+  { name:{ja:"ランダトレカ9種",ko:"랜덤 포카 9가지"}, price:300, types:[] },
 ];
 
 const container = document.getElementById("goods-list");
@@ -252,7 +252,7 @@ function setLang(lang){
 
 // 初期表示
 setLang("ja");
-renderItems():
+renderItems();
 </script>
 
 </body>
