@@ -230,9 +230,7 @@ function updateTotal(){
       ${name}${type?`(${type})`:""} × ${qty} … ${subtotal}円
     </div>`;
   });
-
-  document.getElementById("total").textContent =
-    `${texts[currentLang].total}: ${total} 円`;
+document.getElementById("total").textContent = `合計: ${total.toLocaleString()} 円`;
 
   document.getElementById("summary-list").innerHTML =
     summaryHTML || texts[currentLang].none;
@@ -241,7 +239,6 @@ function updateTotal(){
 // 🟡 言語切替
 function setLang(lang){
   currentLang=lang;
-
   document.getElementById("summary-title").textContent=texts[lang].summary;
 
   document.querySelectorAll(".flag").forEach(f=>f.classList.remove("active"));
