@@ -125,6 +125,7 @@ h1 {
 </div>
 
 <script>
+let selections = {};
 // 🟡 言語状態
 let currentLang = "ja";
 
@@ -173,6 +174,9 @@ function renderItems(){
     if(item.types.length>0){
       typesHTML='<div>';
       item.types.forEach(type=>{
+        const key = `${index}-${type}`;
+        const saved = selections[key] || 0;
+
         typesHTML+=`
         <div>
           <label>${type}</label>
@@ -234,6 +238,11 @@ function updateTotal(){
   document.getElementById("summary-list").innerHTML =
     summaryHTML || texts[currentLang].none;
 }
+function saveQty(el){
+  const key = el.dataset.key;
+  selecions[key] = Number(el.value) || 0;
+  updateTotal();
+}
 
 // 🟡 言語切替
 function setLang(lang){
@@ -244,11 +253,12 @@ function setLang(lang){
   document.getElementById("flag-"+lang).classList.add("active");
 
   renderItems();
+  updateTotal();
 }
 
 // 初期表示
 setLang("ja");
-uptotal();
+updateTotal();
 renderItems();
 </script>
 
