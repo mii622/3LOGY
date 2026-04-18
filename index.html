@@ -130,8 +130,8 @@ let currentLang = "ja";
 
 // 🟡 テキスト翻訳
 const texts = {
-  ja:{ total:"合計", summary:"選んだ内容", none:"なし" },
-  ko:{ total:"합계", summary:"선택한 상품", none:"없음" }
+  ja:{ total:"合計", summary:"選んだ内容", none:"なし",total:"合計",yen:"円" },
+  ko:{ total:"합계", summary:"선택한 상품", none:"없음",total:"합계",yen:"엔" }
 };
 
 const imageUrls = [
@@ -228,8 +228,9 @@ function updateTotal(){
       ${name}${type?`(${type})`:""} × ${qty} … ${subtotal}円
     </div>`;
   });
-document.getElementById("total").textContent = `合計: ${total.toLocaleString()} 円`;
-
+  document.getElementById("total").textContent =
+  `${texts[currentLang].total}: ${total.toLocaleString()} ${texts[currentLang].yen}`;
+  
   document.getElementById("summary-list").innerHTML =
     summaryHTML || texts[currentLang].none;
   document.getElementById("copy-btn").addEventListener("click", () => {
