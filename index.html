@@ -193,6 +193,8 @@ function renderItems(){
       });
       typesHTML+='</div>';
     }else{
+      const key = `${index}-single`;
+      compnst saved = selections[key] ||0;
       typesHTML=`
       <input type="number" min="0" 
       value="${saved}"
