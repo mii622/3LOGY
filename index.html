@@ -180,24 +180,27 @@ function renderItems(){
         typesHTML+=`
         <div>
           <label>${type}</label>
+          
           <input type="number" min="0" 
           value="${saved}"
           class="item-qty"
           data-key="${key}"
           data-name="${item.name[currentLang]}"
           data-type="${type}"
-          data-price="${item.price}">
+          data-price="${item.price}"
           oninput="saveQty(this)">
         </div>`;
       });
       typesHTML+='</div>';
     }else{
       typesHTML=`
-      <input type="number" min="0" value="0"
+      <input type="number" min="0" 
+      value="${saved}"
       class="item-qty"
       data-name="${item.name[currentLang]}"
       data-type=""
-      data-price="${item.price}">`;
+      data-price="${item.price}"
+      oninput="saveQty(this)">`;
     }
 
     div.innerHTML=`
@@ -210,8 +213,6 @@ function renderItems(){
     container.appendChild(div);
   });
 
-  document.querySelectorAll(".item-qty")
-    .forEach(input=>input.addEventListener("input",updateTotal));
 }
 
 // 🟡 合計
