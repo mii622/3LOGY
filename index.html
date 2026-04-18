@@ -180,7 +180,8 @@ function renderItems(){
         typesHTML+=`
         <div>
           <label>${type}</label>
-          <input type="number" min="0" value="saved"
+          <input type="number" min="0" 
+          value="${saved}"
           class="item-qty"
           data-key="${key}"
           data-name="${item.name[currentLang]}"
