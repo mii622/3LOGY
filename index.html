@@ -95,6 +95,7 @@ h1 {
   background:#fff;
   padding:20px;
   border-radius:10px;
+  <button id="copy-btn">コピー</button>
 }
 
 .summary-item {
@@ -232,6 +233,28 @@ document.getElementById("total").textContent = `合計: ${total.toLocaleString()
 
   document.getElementById("summary-list").innerHTML =
     summaryHTML || texts[currentLang].none;
+  document.getElementById("copy-btn").addEventListener("click", () => {
+
+  let text = "";
+
+  document.querySelectorAll(".item-qty").forEach(input=>{
+    const qty = Number(input.value) || 0;
+    if(qty === 0) return;
+
+    const name = input.dataset.name;
+    const type = input.dataset.type;
+
+    text += `${name}${type ? `(${type})` : ""} × ${qty}\n`;
+  });
+
+  if(text === ""){
+    text = "なし";
+  }
+
+  navigator.clipboard.writeText(text)
+    .then(()=> alert("コピーしました！"))
+    .catch(()=> alert("コピー失敗"));
+});
 }
 
 // 🟡 言語切替
