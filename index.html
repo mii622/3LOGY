@@ -180,11 +180,13 @@ function renderItems(){
         typesHTML+=`
         <div>
           <label>${type}</label>
-          <input type="number" min="0" value="0"
+          <input type="number" min="0" value="saved"
           class="item-qty"
+          data-key="${key}"
           data-name="${item.name[currentLang]}"
           data-type="${type}"
           data-price="${item.price}">
+          oninput="saveQty(this)">
         </div>`;
       });
       typesHTML+='</div>';
@@ -240,7 +242,7 @@ function updateTotal(){
 }
 function saveQty(el){
   const key = el.dataset.key;
-  selecions[key] = Number(el.value) || 0;
+  selections[key] = Number(el.value) || 0;
   updateTotal();
 }
 
