@@ -117,8 +117,6 @@ h1 {
   <img src="images/IMG_banner .JPG" class="banner">
 </header>
 
-<h1 id="title"></h1>
-
 <div id="goods-list"></div>
 
 <div id="total"></div>
@@ -134,8 +132,8 @@ let currentLang = "ja";
 
 // 🟡 テキスト翻訳
 const texts = {
-  ja:{ title:"グッズ計算", total:"合計", summary:"選んだ内容", none:"なし" },
-  ko:{ title:"굿즈 계산", total:"합계", summary:"선택한 상품", none:"없음" }
+  ja:{ total:"合計", summary:"選んだ内容", none:"なし" },
+  ko:{ total:"합계", summary:"선택한 상품", none:"없음" }
 };
 
 const imageUrls = [
@@ -244,7 +242,6 @@ function updateTotal(){
 function setLang(lang){
   currentLang=lang;
 
-  document.getElementById("title").textContent=texts[lang].title;
   document.getElementById("summary-title").textContent=texts[lang].summary;
 
   document.querySelectorAll(".flag").forEach(f=>f.classList.remove("active"));
